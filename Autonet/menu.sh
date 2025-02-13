@@ -12,7 +12,8 @@ show_menu() {
     echo "    2) Configure U  "
     echo "     |---- 2.1) Test PINGS"
     echo "                                                     "
-    echo "    3) View Network Info"
+    echo "    3) View Network Parms Info"
+    echo "    4) View Network Cards Info"
     echo "                                                     "
     echo "    0)  Exit                                         "
     echo "-----------------------------------------------------"
@@ -74,6 +75,9 @@ while true; do
             ;;
         3)
             run_script "net_info.sh"
+            ;;
+        4)
+            run_script "cards.sh"
             ;;
         0)
             break
