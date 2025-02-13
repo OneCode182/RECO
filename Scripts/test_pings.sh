@@ -1,12 +1,7 @@
-# Función para esperar a que el usuario presione Enter o cualquier tecla para continuar
+# Función para esperar a que el usuario presione Enter para continuar
 esperar_tecla() {
-    echo "Presione ENTER o cualquier tecla para continuar..."
-    while true; do
-        read -r -n 1 key  # Lee un solo carácter sin necesidad de presionar Enter
-        if [ -n "$key" ]; then
-            break  # Sale del bucle cuando se detecta una tecla
-        fi
-    done
+    echo "Presione ENTER para continuar..."
+    read dummy  # Espera la entrada del usuario
     exit 0
 }
 
