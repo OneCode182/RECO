@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #-----------------------------------------------------------
 # Name: filter_logs.sh
 # Description: Filters the last 15 lines of three log files to 
