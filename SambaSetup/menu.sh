@@ -13,7 +13,6 @@ show_menu() {
     echo "    5) Restart Services"  
     echo "    6) Stop Services"  
     echo "    7) Status Services"  
-    echo "                                                     "
     echo "    0)  Exit                                         "
     echo "-----------------------------------------------------"
 }
@@ -24,6 +23,15 @@ press() {
     read -p "Press any key to continue..." var
 }
 
+# VARS
+USER="usersamba"
+GROUP="groupsamba"
+DIR_SHARE="/home/Server"
+DIR_SERVICES="/usr/pkg/share/examples/rc.d/"
+DIR_RC="/etc/rc.d/"
+DIR_SMB_CONF="/usr/pkg/etc/samba/"
+
+
 while true; do
     show_menu
     # Read user choice
@@ -32,8 +40,13 @@ while true; do
     case $choice in
         1)
             # Data
+            echo "[COMMAND] -> Pkgin: Updating Mirrorlist"
             pkgin -y update
+
+            echo "[COMMAND] -> Pkgin: Installing Samba"
             pkgin -y install samba
+
+            echo "[COMMAND] -> Samba: Verify Instalation"
             samba -V
 
             press
@@ -41,29 +54,35 @@ while true; do
 
         2)
             # USER NAME & PASSWORD
-            user_name="usersamba" 
-            useradd -m $user_name
-            passwd $user_name
+            useradd -m $USER
+            echo "[INFO] -> useradd: User Created"
+
+            echo "[CMD] -> passwd: Set User Password..."
+            passwd $USER
+            echo "[INFO] -> User Password Done"
 
             # CREATE DIRECTORY SAMBA SERVER
-            echo "Creating Directory Server..."
-            server_dir="/home/Server"
-            mkdir $server_dir
+            echo "[COMMAND] -> Mkdir: Creating Directory Server..."
+            mkdir $DIR_SHARE
+            echo "[INFO] -> $DIR_SHARE Created"
 
             # Group
-            group="grpsamba"
-            groupadd $group
-            usermod -G grpsamba $group
+            echo "[CMD] -> groupadd/usermod: Setup UserGroup"
+            groupadd $GROUP
+            usermod -G $GROUP $USER
 
             # Access
-            echo "Set Access Group User..."
-            chown -R :$group $server_dir
-            chmod -R 770 $server_dir
+            echo "[CMD] -> chown/chmod: Security Dir"
+            chown -R :$GROUP $DIR_SHARE
+            chmod -R 770 $DIR_SHARE
 
-            echo "Samba User Setup..."
-            smbdpasswd -a $user_name
-            smbdpasswd -e $user_name
+            echo "[CMD] smbpasswd: Set User to Samba"
+            smbpasswd -a $USER
+            smbpasswd -e $USER
 
+
+            # END
+            echo "[DONE] -> Script Executed"
             press
 
             ;;
@@ -71,31 +90,38 @@ while true; do
         3)
             
             
-            # Backups
-            echo "Creating Backups..."
-            cd /usr/pkg/etc/samba
-            cp smb.conf smb.conf.bak
-            > ./smb.conf
+            
             
             # Copy Template
-            echo "Copying Template smb.conf..."
-            cp smb_tmp.conf smb.conf
-            mv smb.conf /usr/pkg/etc/samba/
+            echo "[INFO] -> Copying Template smb.conf..."
+            cp smb_tmp.conf $DIR
             testparm
 
-            # Adding Services
-            echo "Adding Services /etc/rc.conf file..."
-            echo "" >> /etc/rc.conf
-            echo "# SAMBA CONFIG" >> /etc/rc.conf
-            echo "nmbd=YES" >> /etc/rc.conf
-            echo "smbd=YES" >> /etc/rc.conf
-            echo "winbindd=YES" >> /etc/rc.conf
+            # Backups
+            echo "Creating Backups..."
+            cd $DIR_SMB_CONF
 
-            echo "Copying Services to /etc/rc.d/"
-            ln -sf /usr/pkg/share/examples/rc.d/nmbd /etc/rc.d/nmbd
-            ln -sf /usr/pkg/share/examples/rc.d/smbd /etc/rc.d/smbd
-            ln -sf /usr/pkg/share/examples/rc.d/winbindd /etc/rc.d/winbindd
-            ln -sf /usr/pkg/share/examples/rc.d/samba /etc/rc.d/samba
+            cp smb.conf smb.conf.bak
+            mv smb_tmp.conf smb.conf
+
+
+            # Agregar Servicios al archivo /etc/rc.conf
+            echo "[INFO] Add Services to /etc/rc.conf file..."
+
+            cat << EOF >> /etc/rc.conf
+
+            # SAMBA CONFIG
+            nmbd=YES
+            smbd=YES
+            winbindd=YES 
+EOF
+
+            echo "[INFO] -> Copying Services to /etc/rc.d/"
+            ln -sf "$DIR_SERVICES"nmbd "$DIR_RC"nmbd
+            ln -sf "$DIR_SERVICES"smbd "$DIR_RC"smbd
+            ln -sf "$DIR_SERVICES"winbindd "$DIR_RC"winbindd
+            ln -sf "$DIR_SERVICES"samba "$DIR_RC"samba
+            
             press
 
 
@@ -134,7 +160,7 @@ while true; do
 
             # Comprobar el estado de smbd, nmbd y winbindd
             for service in smbd nmbd winbindd; do
-                status=$(systemctl is-active $service)  # Verificar el estado del servicio
+                status=$(service $service status)  # Verificar el estado del servicio
                 echo -e "$service\t\t$status"
             done
 
