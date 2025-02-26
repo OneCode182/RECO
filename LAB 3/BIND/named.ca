@@ -1,0 +1,15 @@
+;
+; /etc/named.ca - Root hints file for DNS
+;
+; This file contains the list of root nameservers.
+; Initially, only one root server was included for testing, then two more have been added.
+;
+.                        3600000      NS      a.root-servers.net.
+a.root-servers.net.      3600000      A       198.41.0.4
+;
+.                        3600000      NS      b.root-servers.net.
+b.root-servers.net.      3600000      A       170.247.170.2
+;
+.                        3600000      NS      c.root-servers.net.
+c.root-servers.net.      3600000      A       192.33.4.12
+;

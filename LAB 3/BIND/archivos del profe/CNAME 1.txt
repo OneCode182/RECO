@@ -1,0 +1,63 @@
+sudo apt update
+
+sudo apt install bind9
+
+
+
+
+options {
+        listen-on { 127.0.0.1; };
+        listen-on-v6 { ::1; };
+        pid-files { "/var/run/named/named.pid"; };
+        allow-query { 127.0.0.1; 10.0.0.0/8; };
+        allow-transfer { 127.0.0.1; };
+};
+
+zone "." IN {
+        type master;
+        file "/etc/bind/named.ca";
+        allow-update { none; };
+};
+
+include "/etc/bind/named.conf.local";
+
+
+
+
+
+zone "example.com" IN {
+        type master;
+        file "/etc/bind/example.com.zone";
+        allow-update { none; };
+};
+
+
+
+
+
+$ORIGIN example.com.
+$TTL 86400
+@       IN      SOA ns1.example.com. root.example.com. (
+                                2023010101 ; serial
+                                86400      ; refresh (1 day)
+                                3600       ; retry (1 hour)
+                                604800     ; expire (1 week)
+                                10800      ; minimum (3 hours)
+                        )
+@       IN      NS      ns1.example.com.
+@       IN      NS      ns2.example.com.
+
+ns1     IN      A       192.168.1.100
+ns2     IN      A       192.168.1.101
+
+www     IN      A       192.168.1.102
+mail    IN      A       192.168.1.103
+
+
+
+
+sudo systemctl start bind9
+
+dig example.com
+
+nslooup example.com

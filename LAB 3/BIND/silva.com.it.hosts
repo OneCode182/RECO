@@ -1,0 +1,39 @@
+;
+; STUDENT 1 - HOSTS FILE
+; SERGIO SILVA
+;
+; SOA HEADER
+$TTL 86400;
+;
+@ IN SOA code.silva.com.it.     root.silva.com.it. (
+    2025021701 ; Serial (YYYYMMDDNN)
+    3600       ; Refresh (1 hour)
+    1800       ; Retry (30 minutes)
+    604800     ; Expire (1 week)
+    86400      ; Minimum TTL (1 day)
+)
+;
+;
+; Server Name
+;
+silva.com.it.               IN      NS      code.silva.com.it.
+;
+; Address for localhost
+;
+local.silva.com.it.         IN      A       127.0.0.1
+;
+; Addresses for the canonical names
+;
+code.silva.com.it.          IN      A       192.168.1.117
+www.silva.com.it.           IN      A       192.168.1.118
+eci.silva.com.it.           IN      A       192.168.1.119
+life.silva.com.it.          IN      A       192.168.1.120
+earth.silva.com.it.         IN      AAAA    2001::1
+app.silva.com.it.           IN      AAAA    2001::2 
+;
+; Aliases
+;
+software.silva.com.it.      IN      CNAME   code.silva.com.it.
+study.silva.com.it.         IN      CNAME   eci.silva.com.it.
+world.silva.com.it.         IN      CNAME   life.silva.com.it.
+; End of file
