@@ -1,0 +1,194 @@
+/* styles.css */
+
+:root {
+  --color-principal: #4a90e2;      /* Azul vibrante */
+  --color-fondo: #f5f7fa;          /* Fondo muy claro */
+  --color-texto: #222831;          /* Texto oscuro */
+  --color-secundario: #f05454;     /* Rojo suave para acentos */
+  --color-boton-hover: #3b78d8;    /* Azul más oscuro para hover */
+  --color-mensaje: #d1e7fd;        /* Azul claro para mensajes */
+  --radio-borde: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  margin: 2rem auto;
+  max-width: 440px;
+  padding: 1.5rem 1rem;
+  line-height: 1.5;
+}
+
+h1 {
+  text-align: center;
+  color: var(--color-principal);
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+form {
+  background-color: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: var(--radio-borde);
+  box-shadow: 0 10px 20px rgb(74 144 226 / 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  transition: box-shadow 0.3s ease;
+}
+
+form:hover {
+  box-shadow: 0 15px 30px rgb(74 144 226 / 0.25);
+}
+
+label {
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.1rem;
+  color: var(--color-texto);
+}
+
+input[type="text"],
+input[type="number"] {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  border: 2px solid #ddd;
+  border-radius: var(--radio-borde);
+  font-size: 1.1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fafafa;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-principal);
+  box-shadow: 0 0 8px var(--color-principal);
+  background-color: #fff;
+}
+
+button[type="submit"] {
+  background-color: var(--color-principal);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radio-borde);
+  padding: 0.75rem 0;
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgb(74 144 226 / 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--color-boton-hover);
+  box-shadow: 0 7px 14px rgb(59 120 216 / 0.6);
+}
+
+.mensaje {
+  background-color: var(--color-mensaje);
+  color: var(--color-principal);
+  border: 1px solid var(--color-principal);
+  padding: 0.9rem 1.3rem;
+  border-radius: var(--radio-borde);
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-align: center;
+  user-select: none;
+}
+
+p {
+  font-size: 1.1rem;
+  margin: 0.3rem 0;
+}
+
+@media (max-width: 480px) {
+  body {
+    margin: 1rem;
+    max-width: 100%;
+  }
+
+  form {
+    padding: 1.5rem 1.5rem;
+  }
+
+  button[type="submit"] {
+    font-size: 1.1rem;
+  }
+}
+
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Modal box */
+.modal {
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+/* Modal title */
+.modal h2 {
+  margin-top: 0;
+  color: var(--color-principal);
+}
+
+/* Close button */
+.close-modal {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Table in modal */
+.modal table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.modal th, .modal td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.modal th {
+  background-color: var(--color-principal);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.modal tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
